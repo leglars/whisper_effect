@@ -45,14 +45,23 @@ void setup() {
 
 void loop() {
   // put your main code here, to run repeatedly:
-    for(int i=0; i<NUMPIXELS; i++){
-      pixels.setPixelColor(i, pixels.Color(245, 90, 76, gamma[255]));
-      delay(500);
-      pixels.show();
-    }
-    delay(2000);
-    
-    rainbowFade2White(3,3,1);
+//    for(int i=0; i<NUMPIXELS; i++){
+//      pixels.setPixelColor(i, pixels.Color(245, 90, 76, gamma[255]));
+//      delay(500);
+//      pixels.show();
+//    }
+//    pixels.setPixelColor(1, pixels.Color(1,1,1, 0));
+//    pixels.setPixelColor(2, pixels.Color(1,1,1, 255));
+//    pixels.setPixelColor(4, pixels.Color(40,40,40, 0));
+//    pixels.setPixelColor(5, pixels.Color(40,40,40, 255));
+//        pixels.setPixelColor(7, pixels.Color(80,80,80, 0));
+//        pixels.setPixelColor(8, pixels.Color(80,80,80, 255));
+//            pixels.setPixelColor(10, pixels.Color(120,120,120, 0));
+//            pixels.setPixelColor(11, pixels.Color(120,120,120, 255));
+//                pixels.setPixelColor(13, pixels.Color(160,160,160, 0));
+//                pixels.setPixelColor(14, pixels.Color(160,160,160, 255));
+//     pixels.show();
+    rainbowFade2White(3,2,1);
 }
 
 
@@ -66,17 +75,15 @@ void rainbowFade2White(uint8_t wait, int rainbowLoops, int whiteLoops) {
     
     for(int j=0; j<256; j++) { // 5 cycles of all colors on wheel
 
-      for(int i=0; i< pixels.numPixels(); i++) {
 
-        wheelVal = Wheel(((i * 256 / pixels.numPixels()) + j) & 255);
+        wheelVal = Wheel(((2 * 256 / pixels.numPixels())) & 255);
 
         redVal = red(wheelVal) * float(fadeVal/fadeMax);
         greenVal = green(wheelVal) * float(fadeVal/fadeMax);
         blueVal = blue(wheelVal) * float(fadeVal/fadeMax);
 
-        pixels.setPixelColor( i, pixels.Color( redVal, greenVal, blueVal ) );
+        pixels.setPixelColor( 1, pixels.Color( redVal, greenVal, blueVal ) );
 
-      }
 
       //First loop, fade in!
       if(k == 0 && fadeVal < fadeMax-1) {
@@ -97,7 +104,6 @@ void rainbowFade2White(uint8_t wait, int rainbowLoops, int whiteLoops) {
 
 
   delay(500);
-
 
 }
 
