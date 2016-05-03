@@ -87,7 +87,8 @@ def play():
 
     data = wf.readframes(CHUNK)
 
-    while data != ' ':
+
+    while data != '':
         stream.write(data)
         data = wf.readframes(CHUNK)
 
