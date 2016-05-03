@@ -1,6 +1,8 @@
 import pyaudio
 import wave
 import sys
+import os
+
 
 from firebase import firebase
 # firebase = firebase.FirebaseApplication('whispereffect.firebaseio.com', None)
@@ -12,8 +14,11 @@ FORMAT = pyaudio.paInt16
 CHANNELS = 2
 RATE = 44100
 RECORD_SECONDS = 5
-WAVE_OUTPUT_FILENAME = "output.wav"
+WAVE_OUTPUT_FILENAME = "/output.wav"
 
+
+dir = os.path.dirname(__file__)
+file = dir + WAVE_OUTPUT_FILENAME
 
 def recording():
     p = pyaudio.PyAudio()
@@ -71,22 +76,18 @@ def wire():
 
 
 def play():
-    if len(sys.argv) < 2:
-        print("plays a wave file.\n\nUsage: %s output.wav" % sys.argv[0])
-        sys.exit()
-
-    wf = wave.open(sys.argv[1], 'rb')
+    wf = wave.open(file, 'rb')
 
     p = pyaudio.PyAudio()
 
     stream = p.open(format=p.get_format_from_width(wf.getsampwidth()),
-                    channels=wf.getchannels(),
-                    rate=wf.getnchannels(),
+                    channels=wf.getnchannels(),
+                    rate=wf.getframerate(),
                     output=True)
 
     data = wf.readframes(CHUNK)
 
-    while data != '':
+    while data != ' ':
         stream.write(data)
         data = wf.readframes(CHUNK)
 
@@ -95,6 +96,40 @@ def play():
 
     p.terminate()
 
-recording()
+
 play()
+
+
+# class AudioFile:
+#     chunk = 1024
+#
+#     def __init__(self, file):
+#         """ Init audio stream """
+#         self.wf = wave.open(file, 'rb')
+#         self.p = pyaudio.PyAudio()
+#         self.stream = self.p.open(
+#             format = self.p.get_format_from_width(self.wf.getsampwidth()),
+#             channels = self.wf.getnchannels(),
+#             rate = self.wf.getframerate(),
+#             output = True
+#         )
+#
+#     def play(self):
+#         """ Play entire file """
+#         data = self.wf.readframes(self.chunk)
+#         while data != '':
+#             self.stream.write(data)
+#             data = self.wf.readframes(self.chunk)
+#
+#     def close(self):
+#         """ Graceful shutdown """
+#         self.stream.close()
+#         self.p.terminate()
+#
+# # Usage example for pyaudio
+# a = AudioFile("1.wav")
+# a.play()
+# a.close()
+
+
 
