@@ -24,7 +24,7 @@ void setup() {
 }
 
 void loop() {
-  long duration, dist_relay, dist_led;
+  long duration, dist_relay, dist_led, dist;
   digitalWrite(trigPin, LOW);  // Added this line
   delayMicroseconds(2); // Added this line
   digitalWrite(trigPin, HIGH);
@@ -32,6 +32,7 @@ void loop() {
   delayMicroseconds(10); // Added this line
   digitalWrite(trigPin, LOW);
   duration = pulseIn(echoPin, HIGH);
+  dist = (duration/2) / 29.1;
   dist_relay = (duration/2) / 29.1;
   dist_led = (duration/2) / 29.1;
   if (dist_led < 30) {  // This is where the LED On/Off happens
@@ -46,5 +47,6 @@ void loop() {
     else{
       digitalWrite(relay, LOW);
     }
+  Serial.println(dist);
   delay(500);
 }
