@@ -3,5 +3,6 @@
 /control_unit/dev/Include
 /control_unit/dev/Lib
 /control_unit/dev/Scripts
+/control_unit/dev/bin
 *.mp3
 *.wav
