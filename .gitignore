@@ -1,2 +1,7 @@
 */node_modules
-.idea
+*.idea
+/control_unit/dev/Include
+/control_unit/dev/Lib
+/control_unit/dev/Scripts
+*.mp3
+*.wav
