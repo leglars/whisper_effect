@@ -1,6 +1,7 @@
 import pyaudio
 import wave
 from pydub import playback, AudioSegment
+import os
 
 CHUNK = 1024
 FORMAT = pyaudio.paInt16
@@ -40,7 +41,17 @@ def record():
     wf.writeframes(b''.join(frames))
     wf.close()
 
-AudioSegment.from_file("output.wav", format="wav").export("file.mp3", format="mp3", bitrate="48k")
-seg = AudioSegment.from_mp3("file.mp3")
-playback.play(seg)
 
+def converter(source_filename, output_path):
+    AudioSegment.from_file(source_filename, format="wav").export(output_path, format="mp3", bitrate="48k")
+    remove(source_filename)
+    playback.play(AudioSegment.from_mp3(output_path))
+
+
+def remove(filename):
+    os.remove(filename)
+    print(filename + " has been removed")
+
+
+record()
+converter(WAVE_OUTPUT_FILENAME, "file.mp3")
