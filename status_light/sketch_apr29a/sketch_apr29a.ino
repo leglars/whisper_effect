@@ -1,3 +1,5 @@
+#include <Arduino.h>
+
 
 #include <Adafruit_NeoPixel.h>
 #ifdef __AVR__
