@@ -45,7 +45,6 @@ def record():
 def converter(source_filename, output_path):
     AudioSegment.from_file(source_filename, format="wav").export(output_path, format="mp3", bitrate="48k")
     remove(source_filename)
-    playback.play(AudioSegment.from_mp3(output_path))
 
 
 def remove(filename):
@@ -53,5 +52,6 @@ def remove(filename):
     print(filename + " has been removed")
 
 
-record()
-converter(WAVE_OUTPUT_FILENAME, "file.mp3")
+def play(filename):
+    playback.play(AudioSegment.from_mp3(filename))
+
