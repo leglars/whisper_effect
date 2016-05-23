@@ -1,7 +1,10 @@
 import speech_recognition as sr
 
 m = sr.Microphone.list_microphone_names()
-index = m.index('Logitech USB Headset')
+# print(m)
+# index = m.index('Logitech USB Headset')
+
+index = m.index('Built-in Microph')
 
 r = sr.Recognizer()
 r.energy_threshold = 4000

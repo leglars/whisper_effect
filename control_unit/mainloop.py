@@ -2,22 +2,14 @@ import recognition as rec
 import audioAPI as audio
 
 
-def interface():
+def interface(__name__):
+    print(1)
     while True:
 
         if rec.listen():
             audio.record()
-            # audio.converter()
+            audio.converter()
 
 #
-# if __name__ == "main":
-#     interface()
-
-for i in range(3):
-    print(i)
-    while True:
-
-        if rec.listen():
-            audio.record()
-            audio.play(audio.converter())
-            break
+if __name__ == "__main__":
+    interface(__name__)
