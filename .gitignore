@@ -6,5 +6,4 @@
 /control_unit/dev/bin
 /control_unit/dev/pip-selfcheck.json
 /control_unit/dev/pyvenv.cfg
-*.mp3
 *.wav
