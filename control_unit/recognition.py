@@ -21,8 +21,8 @@ def listen():
         while True:
             print("looping")
 
-            audio_data = r.record(source, duration=1)
-            # audio_data = r.listen(source)  # return an audio_data
+            # audio_data = r.record(source, duration=1)
+            audio_data = r.listen(source)  # return an audio_data
             try:
                 # transcription = r.recognize_google(audio_data)
                 transcription = r.recognize_sphinx(audio_data)
@@ -37,7 +37,3 @@ def listen():
                 if word in CONFIRM:
                     return True
             # r.listen_in_background(source, print_phrase)
-
-
-if listen():
-    print("haha")
