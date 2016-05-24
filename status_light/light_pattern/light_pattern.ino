@@ -13,10 +13,7 @@ void setup() {
 void loop() {
   for (int i = 0; i < 5; i++) {
     processingPattern();
-
-void setup() {Serial.begin(9600); FastLED.addLeds<NEOPIXEL,PIN>(leds, 16); }
-void loop() { 
-  processingPattern();
+  }
   // changeColor();
   processing2done();
   delay(1000);
@@ -90,7 +87,7 @@ void processingPattern() {
 
 void processing2done() {
   int one = 1;
-  int a, b, c;
+  uint8_t hue, sat, bri;
     Serial.println("yes");
     for (int i = 0; i < NUM_LEDS; i++) {
       leds[i].setHSV(235, 162, 63 * 4);
@@ -98,27 +95,32 @@ void processing2done() {
     FastLED.show();
     one--;
   }
-  b = 162;
-  c = 63 * 4;
-  for (a = 235; a > 100; a--) {
-//    if (b <= 188) {
-//      b++;
-//    }
-//    if (c > 188) {
-//      c--;
+  sat = 162;
+  bri = 63 * 4;
+  for (hue = 235; hue > 100; hue--) {
+    if (sat <= 188) {
+      sat++;
+    }
+    if (bri > 188) {
+      bri--;
+    }
     for(int i=0; i<NUM_LEDS; i++) {
-      leds[i].setHSV(a, 188, 188);
+
+      CRGB color = CHSV(hue, sat, bri);
+      
+      leds[i] = color;
+
       }
-    delay(10);
-    Serial.println(1);
+    delay(1);
+    FastLED.show();
   }
-  FastLED.show();
+
   delay(1000);
 }
 
 void changeColor() {
-  for (int i=235; i>100; i--) {
-    CRGB color = CHSV(i, 188, 188);
+  for (uint8_t hue = 235; hue > 100; hue--) {
+    CRGB color = CHSV(hue, 188, 188);
     fill_solid(leds, NUM_LEDS, color);
   }
   FastLED.show();
