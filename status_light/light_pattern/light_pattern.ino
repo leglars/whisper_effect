@@ -5,6 +5,7 @@
 #define PIN 6
 
 CRGB leds[NUM_LEDS];
+
 void setup() {
   Serial.begin(9600);
   FastLED.addLeds<NEOPIXEL, PIN>(leds, 16);
@@ -12,7 +13,11 @@ void setup() {
 void loop() {
   for (int i = 0; i < 5; i++) {
     processingPattern();
-  }
+
+void setup() {Serial.begin(9600); FastLED.addLeds<NEOPIXEL,PIN>(leds, 16); }
+void loop() { 
+  processingPattern();
+  // changeColor();
   processing2done();
   delay(1000);
   //  linearPattern();
@@ -109,4 +114,14 @@ void processing2done() {
   }
   FastLED.show();
   delay(1000);
+}
+
+void changeColor() {
+  for (int i=235; i>100; i--) {
+    CRGB color = CHSV(i, 188, 188);
+    fill_solid(leds, NUM_LEDS, color);
+  }
+  FastLED.show();
+  delay(500);
+  
 }
