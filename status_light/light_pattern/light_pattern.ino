@@ -8,6 +8,7 @@ CRGB leds[NUM_LEDS];
 void setup() {Serial.begin(9600); FastLED.addLeds<NEOPIXEL,PIN>(leds, 16); }
 void loop() { 
   processingPattern();
+  // changeColor();
   }
     
 void linearPattern() {
@@ -41,4 +42,14 @@ void processingPattern() {
     leds[i].setHSV(235, 162, 255);
   }
   FastLED.show();
+}
+
+void changeColor() {
+  for (int i=235; i>100; i--) {
+    CRGB color = CHSV(i, 188, 188);
+    fill_solid(leds, NUM_LEDS, color);
+  }
+  FastLED.show();
+  delay(500);
+  
 }
