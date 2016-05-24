@@ -3,55 +3,60 @@
 #include "FastLED.h"
 #define NUM_LEDS 16
 #define PIN 6
+#define LED_TYPE NEOPIXEL
 
 CRGB leds[NUM_LEDS];
 
+static uint32_t x;
+static uint32_t y;
+static uint32_t z;
+
+uint16_t speed = 1900;
+uint16_t scale = 3957; 
+
+uint8_t noise[16];
+
 void setup() {
   Serial.begin(9600);
-  FastLED.addLeds<NEOPIXEL, PIN>(leds, 16);
-}
-void loop() {
-  for (int i = 0; i < 5; i++) {
-    processingPattern();
-  }
-  // changeColor();
-  processing2done();
-  delay(1000);
-  //  linearPattern();
-  //  checkColor();
-  //  delay(1000);
-  //  breathPattern();
+  FastLED.addLeds<LED_TYPE, PIN>(leds, 16);
+  x = random16();
+  y = random16();
+  z = random16();
+
 }
 
-void checkColor() {
-  for (int i = 0; i < 16; i++) {
-    leds[i].setHSV(100, 188, 188);
+void showAll(CHSV color) {
+  for (int i = 0; i < NUM_LEDS; i++) {
+    leds[i] = color;
   }
   FastLED.show();
+}
+
+void showAll(CRGB color) {
+  for (int i = 0; i < NUM_LEDS; i++) {
+    leds[i] = color;
+  }
+  FastLED.show();
+}
+
+CRGB hsv2rgb(uint8_t hue, uint8_t sat, uint8_t bri) {
+  CRGB color = CHSV(hue, sat, bri);
+  return color;
 }
 
 void linearPattern() {
   for (int dot = 0; dot < 511; dot++) {
     if ( dot < 255) {
-      for (int i = 0; i < 16; i++) {
-        leds[i].setHSV(235, 162, dot);
-      }
-      FastLED.show();
+      showAll(CHSV(235, 162, dot));
     } else {
-      for (int i = 0; i < 16; i++) {
-        leds[i].setHSV(235, 162, 511 - dot);
-      }
-      FastLED.show();
+      showAll(CHSV(235, 162, 511-dot));
     }
   }
 }
 
 void breathPattern() {
   for (int dot = 0; dot < (256 * 5) - 1; dot++) {
-    for (int i = 0; i < 16; i++) {
-      leds[i].setHSV(235, 162, quadwave8(dot / 5));
-    }
-    FastLED.show();
+    showAll(CHSV(235, 162, quadwave8(dot / 5)));
   }
 }
 
@@ -85,45 +90,94 @@ void processingPattern() {
   }
 }
 
+
 void processing2done() {
   int one = 1;
   uint8_t hue, sat, bri;
-    Serial.println("yes");
-    for (int i = 0; i < NUM_LEDS; i++) {
-      leds[i].setHSV(235, 162, 63 * 4);
-      delay(42);
+  for (int i = 0; i < NUM_LEDS; i++) {
+    leds[i].setHSV(235, 162, 63 * 4);
+    delay(42);
     FastLED.show();
     one--;
   }
-  sat = 162;
-  bri = 63 * 4;
-  for (hue = 235; hue > 100; hue--) {
-    if (sat <= 188) {
-      sat++;
-    }
-    if (bri > 188) {
-      bri--;
-    }
-    for(int i=0; i<NUM_LEDS; i++) {
 
-      CRGB color = CHSV(hue, sat, bri);
+
+  // sat = 162;
+  // bri = 63 * 4;
+  // for (hue = 235; hue > 100; hue--) {
+  //   if (sat <= 188) {
+  //     sat++;
+  //   }
+  //   if (bri > 188) {
+  //     bri--;
+  //   }
+  //   for(int i=0; i<NUM_LEDS; i++) {
+
+  //     CRGB color = CHSV(hue, sat, bri);
       
-      leds[i] = color;
+  //     leds[i] = color;
 
-      }
-    delay(1);
-    FastLED.show();
+  //     }
+  //   delay(1);
+  //   FastLED.show();
+  // }
+
+  // delay(1000);
+}
+
+
+void fillnoise16() {
+
+  for (int i = 0; i < NUM_LEDS; i++) {
+
+    uint8_t data = inoise16(x , y + (i * scale), z + (2*i * speed -1)) >> 8;
+    noise[i] = data;
+    
+    Serial.println(noise[i]);
   }
+  
 
-  delay(1000);
+}
+
+void hueWheel() {
+
+  for (uint8_t hue = 255; hue > 0; hue--) {
+    showAll(hsv2rgb(hue, 200, 200));
+    delay(20);
+  }
 }
 
 void changeColor() {
-  for (uint8_t hue = 235; hue > 100; hue--) {
-    CRGB color = CHSV(hue, 188, 188);
-    fill_solid(leds, NUM_LEDS, color);
+  fillnoise16();
+  for (uint8_t hue = 255; hue > 0; hue--) {
+    for (int i =0; i < NUM_LEDS; i++) {
+        // uint8_t h = hue >> 8;
+        uint8_t sat = noise[i];
+        // uint8_t bri = noise[i+1];
+
+        CRGB color = CHSV(hue, sat, 200);
+
+        leds[i] = color;
+    }
+    LEDS.show();
+    delay(20);
   }
-  FastLED.show();
-  delay(500);
-  
+}
+
+
+void loop() {
+  // for (int i = 0; i < 5; i++) {
+  //   processingPattern();
+  // }
+  // // changeColor();
+  // processing2done();
+  // delay(1000);
+  // // linearPattern();
+  // //  checkColor();
+  // //  delay(1000);
+  //  // breathPattern();
+  //  changeColor();
+
+  fillnoise16();
+  delay(100000);
 }
