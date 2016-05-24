@@ -7,8 +7,7 @@
 CRGB leds[NUM_LEDS];
 void setup() {Serial.begin(9600); FastLED.addLeds<NEOPIXEL,PIN>(leds, 16); }
 void loop() { 
-  breathPattern();
-  Serial.println();
+  processingPattern();
   }
     
 void linearPattern() {
@@ -34,4 +33,12 @@ void breathPattern() {
     }
     FastLED.show();
   }
+}
+
+
+void processingPattern() {
+  for(int i = 0; i<16; i++) {
+    leds[i].setHSV(235, 162, 255);
+  }
+  FastLED.show();
 }
