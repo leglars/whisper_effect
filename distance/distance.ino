@@ -18,7 +18,7 @@
 #define led 10
 
 void setup() {
-  Serial.begin (11500);
+  Serial.begin (19200);
   pinMode(trigPin, OUTPUT);
   pinMode(echoPin, INPUT);
   pinMode(led, OUTPUT);
@@ -50,5 +50,5 @@ void loop() {
       digitalWrite(relay, LOW);
     }
   Serial.println(dist);
-  delay(500);
+  delay(1000);
 }
