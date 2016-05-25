@@ -177,7 +177,22 @@ void loop() {
   // //  delay(1000);
   //  // breathPattern();
   //  changeColor();
+  if (Serial.available() > 0) {
+    int num = Serial.read();
+    if (num == 'L') {
 
-  fillnoise16();
-  delay(100000);
+      for(int i=0; i<3; i++) {
+        processingPattern();
+
+      }
+    }
+    
+    if (num == 'M') {
+      // Serial.println("hello from leds");
+      for(int i=0; i<3; i++) {
+        breathPattern();
+      }
+      Serial.println("hello from arduino");
+    }
+  }
 }
