@@ -9,6 +9,8 @@
  Original code improvements to the Ping sketch sourced from Trollmaker.com
  Some code and wiring inspired by http://en.wikiversity.org/wiki/User:Dstaub/robotcar
  */
+#include <Arduino.h>
+
 
 #define trigPin 13
 #define echoPin 12
@@ -16,7 +18,7 @@
 #define led 10
 
 void setup() {
-  Serial.begin (9600);
+  Serial.begin (11500);
   pinMode(trigPin, OUTPUT);
   pinMode(echoPin, INPUT);
   pinMode(led, OUTPUT);

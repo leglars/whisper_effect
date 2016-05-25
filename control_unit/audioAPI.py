@@ -104,17 +104,12 @@ def play(path):
     playback.play(AudioSegment.from_mp3(__dir__ + path))
 
 
-
-
-
-
-
-# record()
-# converter()
-print(db.read())
-
-for list in playlist_extractor():
-    play(list)
-
-# db.delete_last_one()
+def play_list(playlist):
+    """
+    The playlist comes from func: playlist_extractor()
+    :param playlist:
+    :return:
+    """
+    for list in playlist:
+        play(list)
 

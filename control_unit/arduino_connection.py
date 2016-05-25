@@ -1,8 +1,17 @@
 from time import sleep
 import serial
 
-ser = serial.Serial('COM4', 9600)  # Establish the connection on a specific port
-# counter = 32  # Below 32 everything in ASCII is gibberish
+
+dist_port = # 'COM8' # '/dev/cu.usbmodem1461'
+dist_freq = 11560
+
+light_port = # 'COM4' # '/dev/cu.usbmodem1461'
+light_freq = 9600
+
+dist = serial.Serial(dist_port, dist_freq)
+light = serial.Serial(light_port, light_freq)
+
+
 while True:
 
     # while ser.in_waiting() == 0:
@@ -19,9 +28,3 @@ while True:
     sleep(1)
     text_line = ser.readline()
     print(text_line)
-
-    # ser.write(b'5')  # Convert the decimal number to ASCII then send it to the Arduino
-    # print(ser.read())  # Read the newest output from the Arduino
-    # sleep(.1)  # Delay for one tenth of a second
-    # if counter == 255:
-    #     counter = 32
