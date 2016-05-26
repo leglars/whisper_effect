@@ -35,6 +35,19 @@ class arduinoConnection(object):
         # the unit of d is cm
         return int(str(distance).strip().split("\'")[1].split("\\r")[0])
 
+    def ping_get_all(self):
+        distance = self.dist.read_all()
+        print(distance)
+
+    def change2working(self):
+        self.light.write(b'W')
+        print("write W")
+        self.__working_flag = True
+        self.__processing_flag = False
+
+
+    # working functions start from here
+
     def ping_dist(self):
         while True:
             self.dist.write(b'P')
@@ -49,10 +62,6 @@ class arduinoConnection(object):
                 except ValueError:
                     continue
             sleep(0.2)
-
-    def ping_get_all(self):
-        distance = self.dist.read_all()
-        print(distance)
 
     def change2processing(self):
         self.light.write(b'P')
@@ -72,23 +81,35 @@ class arduinoConnection(object):
             #     dist = dist.split("\\")[0]
             #     return dist
 
+    def ping2done(self):
+        for i in range(4):
+            self.light.write(b'D')
+            print("ping done")
+            sleep(0.2)
+
     def ping2working(self):
         for i in range(4):
             self.light.write(b'W')
             print("ping work")
             sleep(0.2)
 
-    def ping2default(self):
+    def ping2engaging(self):
         for i in range(4):
-            self.light.write(b'S')
-            print("ping leave")
+            self.light.write(b'E')
+            print("ping engaging")
             sleep(0.2)
 
-    def change2working(self):
-        self.light.write(b'W')
-        print("write W")
-        self.__working_flag = True
-        self.__processing_flag = False
+    def ping2standby(self):
+        for i in range(4):
+            self.light.write(b'S')
+            print("ping engaging")
+            sleep(0.2)
+
+    def ping2default(self):
+        for i in range(4):
+            self.light.write(b'R')
+            print("ping leave")
+            sleep(0.2)
 
     def is_person(self):
         dist = self.ping_dist()
@@ -98,6 +119,9 @@ class arduinoConnection(object):
             return 0
         elif dist > 150:
             return -1
+
+
+# the following is used for testing function
 
 # adConn = arduinoConnection()
 # # # adConn.read_dist()
