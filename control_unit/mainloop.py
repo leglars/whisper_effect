@@ -157,7 +157,7 @@ def interface(__name__):
                     break
 
 
-            sleep(10)
+            # sleep(10)
 
 
         """
