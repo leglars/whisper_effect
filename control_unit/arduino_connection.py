@@ -61,7 +61,7 @@ class arduinoConnection(object):
                     return int(dist)
                 except ValueError:
                     continue
-            sleep(0.2)
+            sleep(0.1)
 
     def change2processing(self):
         self.light.write(b'P')
@@ -112,13 +112,24 @@ class arduinoConnection(object):
             sleep(0.2)
 
     def is_person(self):
-        dist = self.ping_dist()
-        if 10 < dist < 150:
-            return 1
-        elif 2 < dist < 10:
-            return 0
-        elif dist > 150:
-            return -1
+        i = 0
+        while True:
+            dist = self.ping_dist()
+            if 10 < dist < 150: # people approaching 1.5m
+                return 1
+            elif 2 < dist < 10: # people attempt to interact
+                return 0
+            elif 150 < dist < 2000: # because sometimes the sensor can't receive the pulse, it will give the max value, 3000+
+                return -1
+
+            # so we need a way to exclude the above situation.
+            # here, I apply multi-ping to exclude the bad example
+            elif dist > 2000:
+                if i < 3:
+                    i += 1
+                    continue
+                else:
+                    return -1
 
 
 # the following is used for testing function
