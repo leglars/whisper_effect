@@ -10,7 +10,7 @@ r = sr.Recognizer()
 r.energy_threshold = 4000
 r.pause_threshold = 0.5
 
-CONFIRM = ["yes", "ready"]
+CONFIRM = ["yes", "yeah", "no", "nope"]
 
 
 def print_phrase(audio_data):
@@ -38,5 +38,8 @@ def listen():
 
             for word in transcription.split(' '):
                 if word in CONFIRM:
-                    return True
+                    if word == "yes" or word == "yeah":
+                        return True
+                    elif word == "no" or word == "nope":
+                        return False
             # r.listen_in_background(source, print_phrase)
