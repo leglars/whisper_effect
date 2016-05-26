@@ -101,4 +101,5 @@ void processingPattern() {
     FastLED.show();
     delay(42);
   }
+  Serial.println('D');
 }
