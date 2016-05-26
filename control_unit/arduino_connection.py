@@ -35,19 +35,19 @@ class arduinoConnection(object):
         # the unit of d is cm
         return int(str(distance).strip().split("\'")[1].split("\\r")[0])
 
-    def get_dist2(self):
-        return self.dist.read_all()
-
     def ping_dist(self):
         while True:
             self.dist.write(b'P')
-            print("ping it")
+            print("ping ")
             distance = self.dist.read_all()
             dist = str(distance).strip().split("\'")[1]
-            print(dist)
             if dist:
                 dist = dist.split("\\")[0]
-                return int(dist)
+                print(dist)
+                try:
+                    return int(dist)
+                except ValueError:
+                    continue
             sleep(0.2)
 
     def ping_get_all(self):
@@ -63,7 +63,7 @@ class arduinoConnection(object):
     def ping2processing(self):
         for i in range(4):
             self.light.write(b'P')
-            print("ping it")
+            print("ping process")
             # resonse = self.dist.read()
             # res = str(resonse).strip().split("\'")[1]
             # print(resonse)
@@ -72,6 +72,17 @@ class arduinoConnection(object):
             #     dist = dist.split("\\")[0]
             #     return dist
 
+    def ping2working(self):
+        for i in range(4):
+            self.light.write(b'W')
+            print("ping work")
+            sleep(0.2)
+
+    def ping2default(self):
+        for i in range(4):
+            self.light.write(b'S')
+            print("ping leave")
+            sleep(0.2)
 
     def change2working(self):
         self.light.write(b'W')
@@ -79,10 +90,19 @@ class arduinoConnection(object):
         self.__working_flag = True
         self.__processing_flag = False
 
-adConn = arduinoConnection()
-# adConn.read_dist()
+    def is_person(self):
+        dist = self.ping_dist()
+        if 10 < dist < 150:
+            return 1
+        elif 2 < dist < 10:
+            return 0
+        elif dist > 150:
+            return -1
+
+# adConn = arduinoConnection()
+# # adConn.read_dist()
 # print("the dist is " + str(adConn.ping_dist()))
-adConn.ping2processing()
+# adConn.ping2processing()
 
     # print(d)
     # if 6 < d < 30:

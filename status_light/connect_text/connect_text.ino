@@ -24,7 +24,12 @@ void loop() {
   	}
   	if(flag == 'W') {
   		breathPattern();
-  	}
+    }
+    if(flag == 'S'){
+      command = false;
+    }
+  }else {
+    changeColor();
   }
 }
 
@@ -102,4 +107,19 @@ void processingPattern() {
     delay(42);
   }
   Serial.println('D');
+}
+
+void changeColor() {
+  for (uint8_t hue = 255; hue > 0; hue--) {
+    for (int i =0; i < NUM_LEDS; i++) {
+        // uint8_t h = hue >> 8
+        // uint8_t bri = noise[i+1];
+
+        CRGB color = CHSV(hue, 188, 188);
+
+        leds[i] = color;
+    }
+    LEDS.show();
+    delay(20);
+  }
 }

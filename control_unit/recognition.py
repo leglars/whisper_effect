@@ -1,10 +1,10 @@
 import speech_recognition as sr
 
 m = sr.Microphone.list_microphone_names()
-# print(m)
+print(m)
 # index = m.index('Logitech USB Headset')
 
-index = m.index('Built-in Microph')
+# index = m.index('Built-in Microph')
 
 r = sr.Recognizer()
 r.energy_threshold = 4000
@@ -20,7 +20,7 @@ def print_phrase(audio_data):
 
 def listen():
     # 'Built-in Microph' is the name of christine's headphone in Mac mini
-    with sr.Microphone(device_index=index, sample_rate=16000, chunk_size=1024) as source:
+    with sr.Microphone(device_index=1, sample_rate=16000, chunk_size=1024) as source:
         while True:
             print("looping")
 
