@@ -4,9 +4,17 @@ from collections import OrderedDict
 
 
 
+
+
 class dbHandler(object):
+    """
+    DB path: /db/sound.db
+    table: file_output
+    column: id, url(text)
+    """
     def __init__(self):
-        self._db_dir = os.path.dirname(__file__) + "/db/sound.db"
+        self._dir = os.path.dirname(__file__)
+        self._db_dir = self._dir + "/db/sound.db"
         self._db_len = len(self.read())
 
     def read(self):
@@ -42,11 +50,14 @@ class dbHandler(object):
 
 
     def delete_last_one(self):
-        id = self._db_len
         conn = sql.connect(self._db_dir)
         c=conn.cursor()
+        last_one_path = c.execute("SELECT url FROM file_output WHERE id =(SELECT MAX(id) FROM file_output)")
         c.execute("DELETE FROM file_output WHERE id= (SELECT MAX(id) FROM file_output)")
         conn.commit()
+        for row in last_one_path:
+            path = row[0]
+            self.remove(path)
         print("delete successful")
         conn.close()
         return True
@@ -54,3 +65,12 @@ class dbHandler(object):
 
     def get_len(self):
         return self._db_len
+
+    def remove(self, path):
+        os.remove(self._dir + path)
+        print(path.split("/")[-1] + " has been removed")
+
+
+
+db=dbHandler()
+db.delete_last_one()
