@@ -9,6 +9,9 @@ from dbAPI import dbHandler
 
 db = dbHandler()
 
+HELLO = "/sound/instruction/Hello_There_after.wav"
+READY = "/sound/instruction/Are_You_Ready_after.wav"
+SAVE = "/sound/instruction/Like_It_after.wav"
 
 CHUNK = 1024
 FORMAT = pyaudio.paInt16
@@ -73,8 +76,9 @@ def output_path():
 def converter(output_path=output_path(), source_file=WAVE_OUTPUT_FILENAME):
     AudioSegment.from_file(source_file, format="wav").export(output_path, format="mp3", bitrate="48k")
     remove(source_file)
-    save2db(url_extractor(output_path))
-    return output_path
+    url = url_extractor(output_path)
+    save2db(url)
+    return url
 
 
 def remove(file):
@@ -101,8 +105,10 @@ def play(path):
     :param path: path should be a relative path
     :return: None
     """
-    playback.play(AudioSegment.from_mp3(__dir__ + path))
-
+    try:
+        playback.play(AudioSegment.from_mp3(__dir__ + path))  # play mp3
+    except:
+        playback.play(__dir__ + path )  # play wav
 
 def play_list(playlist):
     """
@@ -112,4 +118,3 @@ def play_list(playlist):
     """
     for list in playlist:
         play(list)
-

@@ -100,7 +100,8 @@ class arduinoConnection(object):
             return -1
 
 # adConn = arduinoConnection()
-# # adConn.read_dist()
+# # # adConn.read_dist()
+# print("the dist is " + str(adConn.ping_dist()))
 # print("the dist is " + str(adConn.ping_dist()))
 # adConn.ping2processing()
 

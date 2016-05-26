@@ -21,7 +21,7 @@ void loop() {
   		flag = 0;
   	}
   }
-  delay(1000);
+  delay(50);
 }
 
 void serialEvent() {
