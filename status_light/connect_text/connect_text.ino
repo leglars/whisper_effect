@@ -47,6 +47,11 @@ void loop() {
   	if(flag == 'W') {
   		breathPattern();
     }
+
+    if(flag == 'I'){
+      recordPattern();
+    }
+
     // Engaging people, waiting start to recording
     if(flag == 'E') {
       linearPattern();
@@ -122,6 +127,12 @@ void linearPattern() {
 void breathPattern() {
   for (int dot = 0; dot < (256 * 5) - 1; dot++) {
     showAll(CHSV(235, 162, quadwave8(dot / 5)));
+  }
+}
+
+void recordPattern() {
+  for (int dot = 0; dot < (256 * 2) - 1; dot++) {
+    showAll(CHSV(0, 255, quadwave8(dot / 2)));
   }
 }
 

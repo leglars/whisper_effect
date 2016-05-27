@@ -6,12 +6,12 @@ import serial
 class arduinoConnection(object):
 
     def __init__(self):
-        self.dist_port = '/dev/cu.usbmodem14121'
-        # self.dist_port = 'COM8'
+        # self.dist_port = '/dev/cu.usbmodem14121'
+        self.dist_port = 'COM8'
         self.dist_freq = 9600
 
-        self.light_port = '/dev/cu.usbmodem1461'
-        # self.light_port =  'COM4'
+        # self.light_port = '/dev/cu.usbmodem1461'
+        self.light_port =  'COM4'
         self.light_freq = 9600
 
         self.dist = serial.Serial(self.dist_port, self.dist_freq)
@@ -72,63 +72,79 @@ class arduinoConnection(object):
         self.__working_flag = False
 
     def ping2processing(self):
-        for i in range(4):
+        for i in range(3):
             self.light.write(b'P')
             print("ping process")
             # resonse = self.dist.read()
             # res = str(resonse).strip().split("\'")[1]
             # print(resonse)
-            sleep(0.2)
+            sleep(0.1)
             # if dist:
             #     dist = dist.split("\\")[0]
             #     return dist
 
     def ping2done(self):
-        for i in range(4):
+        for i in range(3):
             self.light.write(b'D')
             print("ping done")
-            sleep(0.2)
+            sleep(0.1)
 
     def ping2working(self):
-        for i in range(4):
+        for i in range(3):
             self.light.write(b'W')
             print("ping work")
-            sleep(0.2)
+            sleep(0.1)
 
     def ping2engaging(self):
-        for i in range(4):
+        for i in range(3):
             self.light.write(b'E')
             print("ping engaging")
-            sleep(0.2)
+            sleep(0.1)
 
     def ping2standby(self):
-        for i in range(4):
+        for i in range(3):
             self.light.write(b'S')
             print("ping engaging")
-            sleep(0.2)
+            sleep(0.1)
 
     def ping2default(self):
-        for i in range(4):
+        for i in range(3):
             self.light.write(b'R')
             print("ping leave")
-            sleep(0.2)
+            sleep(0.1)
+
+    def ping2record(self):
+        for i in range(3):
+            self.light.write(b'I')
+            print("ping record")
+            sleep(0.1)
 
     def is_person(self):
-        i = 0
+        leaving = 0
+        coming = 0
+        against = 0
         while True:
             dist = self.ping_dist()
             if 10 < dist < 150: # people approaching 1.5m
-                return 1
+                if coming < 1:
+                    coming += 1
+                    continue
+                else:
+                    return 1
             elif 2 < dist < 10: # people attempt to interact
-                return 0
+                if against < 1:
+                    against += 1
+                    continue
+                else:
+                    return 0
             elif 150 < dist < 2000: # because sometimes the sensor can't receive the pulse, it will give the max value, 3000+
                 return -1
 
             # so we need a way to exclude the above situation.
             # here, I apply multi-ping to exclude the bad example
             elif dist > 2000:
-                if i < 3:
-                    i += 1
+                if leaving < 2:
+                    leaving += 1
                     continue
                 else:
                     return -1

@@ -17,7 +17,7 @@ CHUNK = 1024
 FORMAT = pyaudio.paInt16
 CHANNELS = 1
 RATE = 44100
-RECORD_SECONDS = 5
+RECORD_SECONDS = 15
 WAVE_OUTPUT_FILENAME = "output.wav"
 
 __dir__ = os.path.dirname(__file__)
@@ -105,10 +105,10 @@ def play(path):
     :param path: path should be a relative path
     :return: None
     """
-    try:
-        playback.play(AudioSegment.from_mp3(__dir__ + path))  # play mp3
-    except:
-        playback.play(__dir__ + path )  # play wav
+    # try:
+    playback.play(AudioSegment.from_mp3(__dir__ + path))  # play mp3
+    # except:
+    #     playback.play(__dir__ + path )  # play wav
 
 def play_list(playlist):
     """

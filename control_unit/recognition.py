@@ -1,13 +1,13 @@
 import speech_recognition as sr
 
-m = sr.Microphone.list_microphone_names()
+# m = sr.Microphone.list_microphone_names()
 # print(m)
 # index = m.index('Logitech USB Headset')
 
-index = m.index('Built-in Microph')
+# index = m.index('Built-in Microph')
 
 r = sr.Recognizer()
-r.energy_threshold = 4000
+r.energy_threshold = 3000
 r.pause_threshold = 0.5
 
 CONFIRM = ["yes", "yeah", "no", "nope"]
@@ -20,7 +20,7 @@ def print_phrase(audio_data):
 
 def listen():
     # 'Built-in Microph' is the name of christine's headphone in Mac mini
-    with sr.Microphone(device_index=index, sample_rate=16000, chunk_size=1024) as source:
+    with sr.Microphone(device_index=1, sample_rate=16000, chunk_size=1024) as source:
         while True:
             print("looping")
 
@@ -28,8 +28,9 @@ def listen():
             audio_data = r.listen(source)  # return an audio_data
             try:
                 # transcription = r.recognize_google(audio_data)
-                transcription = r.recognize_sphinx(audio_data)
+                # transcription = r.recognize_sphinx(audio_data)
                 # transcription = r.recognize_wit(audio_data, "JA52V23ZT5DJTCD3FZDDUVWFXKK5EXXZ")
+                transcription = r.recognize_bing(audio_data, "02c8b5b859344ebc8c57bbe60746d4a9")
             except sr.UnknownValueError:
                 print("no word understand")
                 continue
@@ -43,3 +44,4 @@ def listen():
                     elif word == "no" or word == "nope":
                         return False
             # r.listen_in_background(source, print_phrase)
+

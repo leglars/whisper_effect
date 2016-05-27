@@ -62,7 +62,6 @@ class dbHandler(object):
         conn.close()
         return True
 
-
     def get_len(self):
         return self._db_len
 
@@ -70,7 +69,5 @@ class dbHandler(object):
         os.remove(self._dir + path)
         print(path.split("/")[-1] + " has been removed")
 
-
-
-db=dbHandler()
-db.delete_last_one()
+# db=dbHandler()
+# db.delete_last_one()

@@ -80,14 +80,12 @@ def interface(__name__):
 
             #  start recording process
             while True:
-
                 # waiting confirm
                 if not _is_standby:
                     arConn.ping2standby()
                     _is_standby = True
                     _in_working = False
                     _in_engaging = False
-
                 #  actually, under circumstance, this while loop is useless, because the listen just has two reason,
                 #  yes or no. There is no 3rd choice.
                 while True:
@@ -95,11 +93,13 @@ def interface(__name__):
                     if rec.listen():  # confirm
 
                         # start recording
-                        if not _in_working:
-                            arConn.ping2working()
-                            _in_working = True
-                            _is_standby = False
-                            _in_engaging = False
+                        # if not _in_working:
+                        #     arConn.ping2working()
+                        #     _in_working = True
+                        #     _is_standby = False
+                        #     _in_engaging = False
+
+                        arConn.ping2record()
 
                         audio.record()
                         break
@@ -163,13 +163,16 @@ def interface(__name__):
         """
         The status: people leaving reset the light pattern and other value
         """
-        if has_person == -1 or _quit:
+        if has_person == -1:
             arConn.ping2default()
-            _quit = False
             _is_standby = False
             _in_working = False
             _in_engaging = False
+            if _quit:
+                _quit = False
+                sleep(10)
 
+        sleep(1)
 #
 if __name__ == "__main__":
     interface(__name__)
