@@ -7,11 +7,11 @@ class arduinoConnection(object):
 
     def __init__(self):
         # self.dist_port = '/dev/cu.usbmodem14121'
-        self.dist_port = 'COM8'
+        self.dist_port = 'COM9'
         self.dist_freq = 9600
 
         # self.light_port = '/dev/cu.usbmodem1461'
-        self.light_port =  'COM4'
+        self.light_port = 'COM6'
         self.light_freq = 9600
 
         self.dist = serial.Serial(self.dist_port, self.dist_freq)
@@ -72,7 +72,7 @@ class arduinoConnection(object):
         self.__working_flag = False
 
     def ping2processing(self):
-        for i in range(3):
+        for i in range(2):
             self.light.write(b'P')
             print("ping process")
             # resonse = self.dist.read()
@@ -84,37 +84,37 @@ class arduinoConnection(object):
             #     return dist
 
     def ping2done(self):
-        for i in range(3):
+        for i in range(2):
             self.light.write(b'D')
             print("ping done")
             sleep(0.1)
 
     def ping2working(self):
-        for i in range(3):
+        for i in range(2):
             self.light.write(b'W')
             print("ping work")
             sleep(0.1)
 
     def ping2engaging(self):
-        for i in range(3):
+        for i in range(2):
             self.light.write(b'E')
             print("ping engaging")
             sleep(0.1)
 
     def ping2standby(self):
-        for i in range(3):
+        for i in range(2):
             self.light.write(b'S')
             print("ping engaging")
             sleep(0.1)
 
     def ping2default(self):
-        for i in range(3):
+        for i in range(2):
             self.light.write(b'R')
             print("ping leave")
             sleep(0.1)
 
     def ping2record(self):
-        for i in range(3):
+        for i in range(2):
             self.light.write(b'I')
             print("ping record")
             sleep(0.1)

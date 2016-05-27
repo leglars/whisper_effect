@@ -1,21 +1,22 @@
 from time import sleep
+from threading import Thread
 
 import audioAPI as audio
 import recognition as rec
 from arduino_connection import arduinoConnection
 from dbAPI import dbHandler
+from light_controller import LightController
 
 arConn = arduinoConnection()
 db = dbHandler()
+lc = LightController()
 
 
-
-
-
-def interface(__name__):
-    _in_working = False
-    _in_engaging = False
-    _is_standby = False
+def main():
+    # init variables
+    # _in_working = False
+    # _in_engaging = False
+    # _is_standby = False
     _quit = False
 
     playlist = []
@@ -23,6 +24,7 @@ def interface(__name__):
     instruction_hello = audio.HELLO
     instruction_ready = audio.READY
     instruction_save = audio.SAVE
+
 
     print(1)
     while True:
@@ -37,14 +39,12 @@ def interface(__name__):
             2). prepare playlist
         """
         if has_person == 1 and not _quit:
-            if not _in_engaging:
-                arConn.ping2engaging()
-                _in_engaging = True
-                _is_standby = False
-                _in_working = False
-                if not playlist:
-                    playlist.append(audio.playlist_extractor())
-                    continue
+            LightControllerManager = Thread(target=lc.engaging())
+            LightControllerManager.start()
+
+            if not playlist:
+                playlist.append(audio.playlist_extractor())
+                continue
 
         """
         The status: person against:
@@ -55,23 +55,17 @@ def interface(__name__):
             2). play playlist
         """
         if has_person == 0 and not _quit:
-            if playlist:
-                if not _in_working:
-                    arConn.ping2working()
-                    _in_working = True
-                    _is_standby = False
-                    _in_engaging = False
+            # if playlist:
+                # if not _in_working:
+                #     arConn.ping2working()
+                #     _in_working = True
+                #     _is_standby = False
+                #     _in_engaging = False
+            # else:
+            LightControllerManager = Thread(target=lc.working())
+            LightControllerManager.start()
 
-                    # audio.play_list(playlist)
-                    # while True:
-                    #     if not _is_standby:
-                    #         arConn.ping2standby()
-                    #     recording_voice()
-                    #     if is_save():
-                    #         break
-                    #     else:
-                    #         continue
-            else:
+            if not playlist:
                 playlist.append(audio.playlist_extractor())
 
             audio.play(instruction_hello)
@@ -81,13 +75,18 @@ def interface(__name__):
             #  start recording process
             while True:
                 # waiting confirm
-                if not _is_standby:
-                    arConn.ping2standby()
-                    _is_standby = True
-                    _in_working = False
-                    _in_engaging = False
+                # if not _is_standby:
+                #     arConn.ping2standby()
+                #     _is_standby = True
+                #     _in_working = False
+                #     _in_engaging = False
+
                 #  actually, under circumstance, this while loop is useless, because the listen just has two reason,
                 #  yes or no. There is no 3rd choice.
+
+                LightControllerManager = Thread(target=lc.standby())
+                LightControllerManager.start()
+
                 while True:
                     # we have two choices: 1. yes for recording; 2. no for quit
                     if rec.listen():  # confirm
@@ -99,7 +98,10 @@ def interface(__name__):
                         #     _is_standby = False
                         #     _in_engaging = False
 
-                        arConn.ping2record()
+                        # arConn.ping2record()
+
+                        LightControllerManager = Thread(target=lc.recording())
+                        LightControllerManager.start()
 
                         audio.record()
                         break
@@ -120,30 +122,40 @@ def interface(__name__):
 
                 # saving and format converter
                 # status light processing --> 2done (--> done)
-                arConn.ping2processing()
-                _in_working = False
-                _is_standby = False
-                _in_engaging = False
+                # arConn.ping2processing()
+                # _in_working = False
+                # _is_standby = False
+                # _in_engaging = False
+
+                LightControllerManager = Thread(target=lc.processing())
+                LightControllerManager.start()
 
                 play_back = audio.converter()
                 sleep(2)
-                arConn.ping2done()
-                sleep(1)
+                # arConn.ping2done()
+                LightControllerManager = Thread(target=lc.done())
+                LightControllerManager.start()
 
                 # playback
                 # if people still there, playback
                 if has_person == 0:
                     # if not _in_working:
-                    arConn.ping2working()
+                    # arConn.ping2working()
                     # _in_working = True
                     # _is_standby = False
+
+                    LightControllerManager = Thread(target=lc.working())
+                    LightControllerManager.start()
 
                     audio.play(play_back)
                     audio.play(instruction_save)
 
                     # two choices: 1. yes to save, actually do nothing because we already save
                     #              2. no to quit
-                    arConn.ping2standby()
+
+                    LightControllerManager = Thread(target=lc.standby())
+                    LightControllerManager.start()
+
                     if rec.listen():
                         arConn.ping2default() # temp think people we leave
                         break
@@ -165,9 +177,9 @@ def interface(__name__):
         """
         if has_person == -1:
             arConn.ping2default()
-            _is_standby = False
-            _in_working = False
-            _in_engaging = False
+            # _is_standby = False
+            # _in_working = False
+            # _in_engaging = False
             if _quit:
                 _quit = False
                 sleep(10)
@@ -175,4 +187,4 @@ def interface(__name__):
         sleep(1)
 #
 if __name__ == "__main__":
-    interface(__name__)
+    main()

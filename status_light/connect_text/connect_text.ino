@@ -47,7 +47,7 @@ void loop() {
   	if(flag == 'W') {
   		breathPattern();
     }
-
+    // recording
     if(flag == 'I'){
       recordPattern();
     }
