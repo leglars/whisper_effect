@@ -6,12 +6,12 @@ import serial
 class arduinoConnection(object):
 
     def __init__(self):
-        # self.dist_port = '/dev/cu.usbmodem14121'
-        self.dist_port = 'COM9'
+        self.dist_port = '/dev/cu.usbmodem1411'
+        # self.dist_port = 'COM9'
         self.dist_freq = 9600
 
-        # self.light_port = '/dev/cu.usbmodem1461'
-        self.light_port = 'COM6'
+        self.light_port = '/dev/cu.usbmodem1471'
+        # self.light_port = 'COM6'
         self.light_freq = 9600
 
         self.dist = serial.Serial(self.dist_port, self.dist_freq)
