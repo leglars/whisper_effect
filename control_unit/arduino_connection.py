@@ -8,12 +8,12 @@ class arduinoConnection(object):
     def __init__(self):
         # self.dist_port = '/dev/cu.usbmodem14121'
         # MAC mini win
-        self.dist_port = 'COM5'
-        self.dist_freq = 9600
+        self.dist_port = 'COM9'
+        self.dist_freq = 19200
 
         # self.light_port = '/dev/cu.usbmodem1461'
         # MAC mini  win
-        self.light_port = 'COM3'
+        self.light_port = 'COM6'
         self.light_freq = 9600
 
         self.dist = serial.Serial(self.dist_port, self.dist_freq)

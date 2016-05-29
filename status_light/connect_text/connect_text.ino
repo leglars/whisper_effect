@@ -15,14 +15,14 @@ static uint32_t y;
 static uint32_t z;
 
 uint16_t speed = 1900;
-uint16_t scale = 3957; 
+uint16_t scale = 3957;
 
 uint8_t noise[16];
 
 
 void setup() {
   // initialize serial:
-  Serial.begin(9600);
+  Serial.begin(19200);
   FastLED.addLeds<LED_TYPE, PIN>(leds, 16);
   x = random16();
   y = random16();
