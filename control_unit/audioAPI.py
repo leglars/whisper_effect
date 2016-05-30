@@ -1,6 +1,7 @@
 import wave
 import os
 import uuid
+import random
 
 import pyaudio
 from pydub import playback, AudioSegment
@@ -103,11 +104,20 @@ def playlist_extractor():
     :return: get a list of relative path from db
     """
     full_list = db.read()
+    playlist_full = []
     playlist = []
     for id, url in full_list.items():
-        playlist.append(url)
+        playlist_full.append(url)
+    list_len = len(playlist_full)
 
-    return playlist
+    if list_len <= 5:
+        return playlist_full
+    else:
+        for i in range(5):
+            r = random.randint(0, list_len)
+            playlist.append(playlist_full.pop(r))
+            list_len -= 1
+        return playlist
 
 
 def play(path):
