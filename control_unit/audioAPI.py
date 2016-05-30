@@ -10,9 +10,10 @@ from dbAPI import dbHandler
 
 db = dbHandler()
 
-HELLO = "/sound/instruction/Hello_There_after.mp3"
+HELLO = "/sound/instruction/15_seconds_Mono.mp3"
 READY = "/sound/instruction/Are_You_Ready_after.mp3"
 SAVE = "/sound/instruction/I_Like_It_after.mp3"
+THANK = "/sound/instruction/Thank_You.mp3"
 
 CHUNK = 1024
 FORMAT = pyaudio.paInt16
