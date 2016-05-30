@@ -14,7 +14,7 @@ class arduinoConnection(object):
         # self.light_port = '/dev/cu.usbmodem1461'
         # MAC mini  win
         self.light_port = 'COM5'
-        self.light_freq = 9600
+        self.light_freq = 19200
 
         self.dist = serial.Serial(self.dist_port, self.dist_freq)
         self.light = serial.Serial(self.light_port, self.light_freq)
@@ -153,9 +153,6 @@ class arduinoConnection(object):
 
 # the following is used for testing function
 
-adConn = arduinoConnection()
-print(1)
-adConn.read_dist()
 # adConn.ping2processing()
 # # # adConn.read_dist()
 
