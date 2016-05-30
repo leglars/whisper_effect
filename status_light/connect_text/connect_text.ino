@@ -1,7 +1,7 @@
 #include <Arduino.h>
 
 #include "FastLED.h"
-#define NUM_LEDS 16
+#define NUM_LEDS 10
 #define PIN 6
 #define LED_TYPE NEOPIXEL
 
@@ -153,28 +153,28 @@ void standbyPattern() {
 
 void processingPattern() {
   int a, b, c;
-  for (int i = 0; i < 16; i++) {
+  for (int i = 0; i < NUM_LEDS; i++) {
     a = i + 1;
     b = i + 2;
     c = i + 3;
-    if (a > 15) {
-      a = a - 16;
+    if (a > NUM_LEDS - 1) {
+      a = a - NUM_LEDS;
     }
-    if (b > 15) {
-      b = b - 16;
+    if (b > NUM_LEDS) {
+      b = b - NUM_LEDS;
     }
-    if (c > 15) {
-      c = c - 16;
+    if (c > NUM_LEDS - 1) {
+      c = c - NUM_LEDS;
     }
     leds[c].setHSV(235, 162, 63 * 4);
     leds[b].setHSV(235, 162, 63 * 3);
     leds[a].setHSV(235, 162, 63 * 2 + 30);
-    leds[a].setHSV(235, 162, 63 * 1 + 40);
+    leds[i].setHSV(235, 162, 63 * 1 + 40);
     if (i > 0) {
       leds[i - 1].setHSV(0, 0, 0);
     }
     else {
-      leds[15].setHSV(0, 0, 0);
+      leds[9].setHSV(0, 0, 0);
     }
     FastLED.show();
     delay(42);
