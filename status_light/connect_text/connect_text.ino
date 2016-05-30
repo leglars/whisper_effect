@@ -126,7 +126,7 @@ void linearPattern() {
 
 void breathPattern() {
   for (int dot = 0; dot < (256 * 5) - 1; dot++) {
-    showAll(CHSV(235, 162, quadwave8(dot / 5)));
+    showAll(CHSV(100, 188, quadwave8(dot / 5)));
   }
 }
 
