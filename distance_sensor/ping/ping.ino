@@ -1,6 +1,5 @@
-#define trigPin 13
+ #define trigPin 13
 #define echoPin 12
-#define led 10
 
 int flag;
 boolean command = false;
@@ -9,7 +8,6 @@ void setup() {
   Serial.begin (19200);
   pinMode(trigPin, OUTPUT);
   pinMode(echoPin, INPUT);
-  pinMode(led, OUTPUT);
 }
 
 void loop() {
@@ -30,7 +28,6 @@ void serialEvent() {
     flag = Serial.read();
     command = true;
     // Serial.println(flag);
-    digitalWrite(led,HIGH);
 
     // }
   }
@@ -47,5 +44,4 @@ void ping() {
   duration = pulseIn(echoPin, HIGH);
   dist = (duration/2) / 29.1;
   Serial.println(dist);
-  digitalWrite(led,LOW);
 }

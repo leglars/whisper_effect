@@ -1,7 +1,7 @@
 #include <Arduino.h>
 
 #include "FastLED.h"
-#define NUM_LEDS 10
+#define NUM_LEDS 16
 #define PIN 6
 #define LED_TYPE NEOPIXEL
 
@@ -83,9 +83,12 @@ void serialEvent() {
     
     // if the incoming character is a newline, set a flag
     // so the main loop can do something about it:
-    // if (inChar == '\n') {
+//    if (flag != 'R') {
     command = true;
-    // }
+//    }
+//    else{
+//    command = false;  
+//    }
   }
 }
 
@@ -174,7 +177,7 @@ void processingPattern() {
       leds[i - 1].setHSV(0, 0, 0);
     }
     else {
-      leds[9].setHSV(0, 0, 0);
+      leds[NUM_LEDS - 1].setHSV(0, 0, 0);
     }
     FastLED.show();
     delay(42);

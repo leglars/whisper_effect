@@ -67,4 +67,26 @@ class LightController:
 
 
 
+lc = LightController()
 
+lc.engaging()
+lc.engaging()
+sleep(5)
+lc.working()
+lc.working()
+sleep(5)
+lc.processing()
+lc.processing()
+sleep(5)
+lc.done()
+lc.done()
+sleep(3)
+lc.standby()
+lc.standby()
+sleep(5)
+lc.recording()
+lc.recording()
+sleep(5)
+lc.reset()
+lc.reset()
+sleep(5)

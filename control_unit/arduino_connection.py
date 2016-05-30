@@ -8,12 +8,12 @@ class arduinoConnection(object):
     def __init__(self):
         # self.dist_port = '/dev/cu.usbmodem14121'
         # MAC mini win
-        self.dist_port = 'COM9'
+        self.dist_port = 'COM6'
         self.dist_freq = 19200
 
         # self.light_port = '/dev/cu.usbmodem1461'
         # MAC mini  win
-        self.light_port = 'COM6'
+        self.light_port = 'COM5'
         self.light_freq = 9600
 
         self.dist = serial.Serial(self.dist_port, self.dist_freq)
@@ -23,15 +23,15 @@ class arduinoConnection(object):
         self.__working_flag = False
 
     def read_dist(self):
+        print(2)
         while True:
-            d = self.get_dist()
-            print(d)
+            d = self.ping_dist()
             if 6 < d < 30:
-                if not self.__working_flag:
-                    self.change2working()
+                self.ping2working()
             elif d <= 6:
-                if not self.__processing_flag:
-                    self.change2processing()
+                self.ping2processing()
+            elif d > 30:
+                self.ping2default()
             sleep(1)
 
     def get_dist(self):
@@ -77,9 +77,8 @@ class arduinoConnection(object):
         for i in range(2):
             self.light.write(b'P')
             print("ping process")
-            # resonse = self.dist.read()
-            # res = str(resonse).strip().split("\'")[1]
-            # print(resonse)
+            resonse = self.light.read_all()
+            print(resonse)
             sleep(0.1)
             # if dist:
             #     dist = dist.split("\\")[0]
@@ -154,8 +153,12 @@ class arduinoConnection(object):
 
 # the following is used for testing function
 
-# adConn = arduinoConnection()
+adConn = arduinoConnection()
+print(1)
+adConn.read_dist()
+# adConn.ping2processing()
 # # # adConn.read_dist()
+
 # print("the dist is " + str(adConn.ping_dist()))
 # print("the dist is " + str(adConn.ping_dist()))
 # adConn.ping2processing()
