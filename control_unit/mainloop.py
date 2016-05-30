@@ -86,6 +86,7 @@ def main():
     instruction_hello = audio.HELLO
     instruction_ready = audio.READY
     instruction_save = audio.SAVE
+    instruction_thank = audio.THANK
 
 
     print(1)
@@ -219,6 +220,12 @@ def main():
                     LightControllerManager.start()
 
                     if rec.listen():
+
+                        LightControllerManager = Thread(target=lc.working())
+                        LightControllerManager.start()
+                        audio.play(instruction_thank)
+                        sleep(1)
+
                         arConn.ping2default() # temp think people we leave
                         break
 
