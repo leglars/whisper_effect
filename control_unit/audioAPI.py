@@ -74,8 +74,19 @@ def output_path():
     return __dir__ + "/sound/" + filename_generator() + ".mp3"
 
 
+def louder(file, value):
+    """
+    :param file: int, audio_file opened by AudioSegment
+    :param value: how much dB you want to
+    :return: return worked file
+    """
+    return file + value
+
+
+
 def converter(output_path=output_path(), source_file=WAVE_OUTPUT_FILENAME):
-    AudioSegment.from_file(source_file, format="wav").export(output_path, format="mp3", bitrate="48k")
+    audio_file = AudioSegment.from_file(source_file, format="wav")
+    louder(audio_file, 3).export(output_path, format="mp3", bitrate="48k")
     remove(source_file)
     url = url_extractor(output_path)
     save2db(url)
