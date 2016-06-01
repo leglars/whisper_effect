@@ -45,3 +45,19 @@ def listen():
                         return False
             # r.listen_in_background(source, print_phrase)
 
+# record = sr.Recognizer()
+# record.energy_threshold = 2000
+# record.pause_threshold = 1
+#
+#
+# def recording():
+#     with sr.Microphone(device_index=1, sample_rate=16000, chunk_size=1024) as source:
+#         print("start recording")
+#         audio_data = record.record(source, 15, 0.5)
+#
+#     with open("microphone-results.wav", "wb") as f:
+#         f.write(audio_data.get_wav_data())
+#
+#
+# recording()
+listen()
